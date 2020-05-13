@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input} from '@angular/core';
 import * as CanvasJS from './canvasjs.min';
 import { HttpClient } from '@angular/common/http';
 
@@ -9,36 +9,48 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./main-window.component.css']
 })
 export class MainWindowComponent implements OnInit {
-  cols = ['AGENT NAME', "CREATED DATE", "ORDER TYPE", "ORDER URGENCY TYPE","DELIVERY CHARGES BASE"]
+  @Input() Message: string;
   post_data = {
       x_label : "CREATED DATE",
       y_label : "DELIVERY CHARGES BASE",
       bins : "ORDER URGENCY TYPE"
   }
-  myLabels: any = {};
-  myValues: any = {};
+  myData: any = {};
+  dataPoints: any = {};
+  map = new Map();
 
   constructor(private http: HttpClient) {
+  }
+
+  get_data(){
     let data: Object = {};
     // this.http.post(this.url, this.post_data).toPromise().then(data =>{console.log(data)});
-   let value = this.http.get("http://127.0.0.1:5000/process", {
+   return this.http.get("http://127.0.0.1:5000/process", {
       params: {
         x: this.post_data["x_label"],
         y: this.post_data["y_label"],
         bins: this.post_data["bins"]
       },
       observe: 'response'
-    }).subscribe(data =>{console.log(data.body["labels"]), console.log(data.body["values"]),
-     this.myLabels = data.body["labels"], this.myValues = data.body["values"];});
+    }).subscribe(data =>{
+      for (let i in data.body){
+        for (var j=0; j<i.length; j++){
+            let label = data.body.labels[j]
+            let value = data.body.values[j]
+            this.map.set(label, value);
+            // console.log(this.map)
+        }
+      }
+      console.log(this.map)
+    });
   }
-x
-  ngOnInit(): void {
 
-    let x_label = "test"
-    let y_label = ""
-    let bins = ""
-    let start_date = ""
-    let end_date = ""
+  chat(){
+    let i:any
+    for (i in this.myData) {
+      this.dataPoints.push({ label: i });
+      // console.log("i",i)
+    }
     let chart = new CanvasJS.Chart("chartContainer", {
       animationEnabled: true,
       exportEnabled: true,
@@ -47,33 +59,35 @@ x
       },
       data:[
         {
-          y:this.myLabels[1]
+        dataPoints: this.dataPoints
         },
-
-        {label:this.myLabels[1]
-        },
-
        ],
 
       });
-    //   data:
-    //   [{
-    //     type: "column",
-    //     dataPoints: [
-    //       { y: 71, label: "Apple" },
-    //       { y: 55, label: "Mango" },
-    //       { y: 50, label: "Orange" },
-    //       { y: 65, label: "Banana" },
-    //       { y: 95, label: "Pineapple" },
-    //       { y: 68, label: "Pears" },
-    //       { y: 28, label: "Grapes" },
-    //       { y: 34, label: "Lychee" },
-    //       { y: 14, label: "Jackfruit" }
-    //     ]
-    //   }]
-    // });
-    console.log(x_label)
     chart.render();
   }
 
+  ngOnInit(): void {
+    this.get_data()
+    this.chat()
+    console.log(this.map)
+    // console.log(this.myData)
+
+    // for ( var i = 0; i < this.myLabels.length; i++ ) {
+    //     console.log(JSON.stringify(this.myLabels[i]))
+    //     console.log(this.myLabels[i])
+    // }
+    // var dataJson = JSON.stringify(this.myLabels[0]);
+    // console.log(dataJson)
+    // this.dataList = JSON.parse(dataJson);
+
+    // console.log(this.dataList)
+
+
+
+  }
+
+
 }
+
+

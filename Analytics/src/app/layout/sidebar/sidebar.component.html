@@ -3,38 +3,35 @@
 
   </head>
   <body>
-    <form>
+    <form (ngSubmit)="onSubmit(f)" #f="ngForm">
       <div class="row">
         <div class="grid-container">
         <label for="date1">start date</label>
-        <input type="text" class="form-control" id = "date1"
+        <input type="text" class="form-control" id = "date1" ngModel name="date1"
             uib-datepicker-popup="yyyy-MM-dd" datepicker-options="datepickerOptions"
             ng-model="myDate" is-open="isDatepickerOpen">
 
         <label for="date2">end date</label>
-        <input type="text" class="form-control" id = "date2"
+        <input type="text" class="form-control" id = "date2" ngModel name="date2"
             uib-datepicker-popup="yyyy-MM-dd" datepicker-options="datepickerOptions"
             ng-model="myDate" is-open="isDatepickerOpen">
 
         <div class="form-group">
               <span class="input-group-addon"> X Label </span>
-              <select name="x" class="selectpicker form-control">
-                <option value="Choose">Choose</option>
-                <option [value]="i" *ngFor="let i of x">{{i}}</option>
+              <select name="x" class="selectpicker form-control" required ngModel name="x">
+                <option [value]="i" *ngFor="let i of x">{{i}} </option>
               </select>
               <span class="input-group-addon"> Y Label</span>
-              <select name="y" class="selectpicker form-control">
-                <option value="Choose">Choose</option>
-                <option [value]="i" *ngFor="let i of x">{{i}}</option>
+              <select name="y" class="selectpicker form-control"  ngModel name="y">
+                <option [value]="i" *ngFor="let i of y">{{i}}</option>
               </select>
               <span class="input-group-addon"> Bins</span>
-              <select name="bins" class="selectpicker form-control">
-                <option value="Choose">Choose</option>
+              <select name="bins" class="selectpicker form-control" ngModel name="bins">
                 <option [value]="i" *ngFor="let i of x">{{i}}</option>
               </select>
               <div class="form-group row">
                 <div class="col-sm-10">
-                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button type="submit" [disabled]="!f.valid" class="btn btn-primary">Submit</button>
                 </div>
               </div>
           </div>

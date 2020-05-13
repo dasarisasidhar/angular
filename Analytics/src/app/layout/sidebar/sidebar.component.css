@@ -6,3 +6,7 @@ body {
 .grid-container {
   grid-row-gap: 50px;
 }
+
+select.ng-invalid {
+  border: 1px solid red;
+}
