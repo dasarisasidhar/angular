@@ -1,0 +1,8 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+
+body {
+  margin: 25px;
+  }
+.grid-container {
+  grid-row-gap: 50px;
+}
