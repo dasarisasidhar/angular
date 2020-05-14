@@ -16,13 +16,13 @@ import { FormsModule } from '@angular/forms';
     HeaderComponent,
     SidebarComponent,
     RightSideNavComponent,
-    MainWindowComponent
+    MainWindowComponent,
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

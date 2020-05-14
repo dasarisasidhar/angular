@@ -25,6 +25,7 @@ export class SidebarComponent implements OnInit {
     let data = f.value
 
     console.log(data)
+
   }
 
 }
