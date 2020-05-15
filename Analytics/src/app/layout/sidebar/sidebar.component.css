@@ -10,3 +10,7 @@ body {
 select.ng-invalid {
   border: 1px solid red;
 }
+
+mat-form-field {
+  margin-right: 12px;
+}

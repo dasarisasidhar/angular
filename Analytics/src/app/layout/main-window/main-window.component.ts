@@ -1,7 +1,6 @@
 import { Component, OnInit, Input} from '@angular/core';
 import { HttpClient  } from '@angular/common/http';
 import { Chart } from 'chart.js';
-import * as CanvasJS from './canvasjs.min';
 import { CharData } from "../../service/char-data"
 
 @Component({
@@ -10,34 +9,51 @@ import { CharData } from "../../service/char-data"
   styleUrls: ['./main-window.component.css']
 })
 export class MainWindowComponent implements OnInit {
+    // details:{details:any}[] = [];
+  // d = this.sendData.detais;
 
-  post_data = {
-    x_label : "CREATED DATE",
-    y_label : "DELIVERY CHARGES BASE",
-    bins : "ORDER URGENCY TYPE"
-    }
+    post_data:any ;
     data: CharData[];
-    labels:any = [];
-    values:any = [];
     test:any = [];
     barchart = [];
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient ) {}
+
+arrayData(details:any){
+  this.getServerData(details)
+}
+
+getServerData(data:any){
+  console.log(data)
+  this.http.get("http://127.0.0.1:5000/process", { params: {
+    x: data["x"],
+    y: data["y"],
+    bins: data["bins"],
+    startDate : data["startDate"],
+    endDate : data["endtDate"]
+  },
+  observe: 'response'
+  }).subscribe( res => { var data: any  = res.body;
+            this.chat(data["labels"], data["values"]);
+  return data});
+}
+
   chat(x:any, y:any){
-    for(var i = 0;i<x.length;i++) {
-      console.log(x[i])
-      console.log(y[i])
-    }
-    let dataValues = y
-    let dataLabels = x
+    // for(var i = 0;i<x.length;i++) {
+    //   console.log(x[i])
+    //   console.log(y[i])
+    // }
+    let dataLabels = x;
+    let dataValues = y;
+    console.log(dataLabels)
+    console.log(dataValues)
       this.barchart = new Chart('canvas', {
-        type: 'bar',
+        type: 'bar', // change chart type as your per your requirement
         data: {
-          labels: dataLabels[0],
+          labels: dataLabels,
           datasets: [
             {
-              data: dataValues[0],
+              data: dataValues,
               borderColor: '#3cba9f',
               backgroundColor: [
                 "#3cb371",
@@ -70,24 +86,10 @@ export class MainWindowComponent implements OnInit {
           }
         }
       });
-
-      // console.log(x)
-      // console.log(y)
   }
 
   ngOnInit(): void {
-    this.http.get("http://127.0.0.1:5000/process", { params: {
-    x: this.post_data["x_label"],
-    y: this.post_data["y_label"],
-    bins: this.post_data["bins"]
-  },
-  observe: 'response'
-  }).subscribe( res => { var data: any  = res.body;
-            this.values.push(data["values"]) ;
-            this.labels.push(data["labels"]) ;
-            this.chat(this.labels, this.values)
 
-  return data});
   }
 
 

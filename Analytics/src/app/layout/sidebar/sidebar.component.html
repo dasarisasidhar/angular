@@ -5,16 +5,21 @@
   <body>
     <form (ngSubmit)="onSubmit(f)" #f="ngForm">
       <div class="row">
+      <label>Start Date</label>
         <div class="grid-container">
-        <label for="date1">start date</label>
-        <input type="text" class="form-control" id = "date1" ngModel name="date1"
-            uib-datepicker-popup="yyyy-MM-dd" datepicker-options="datepickerOptions"
-            ng-model="myDate" is-open="isDatepickerOpen">
-
-        <label for="date2">end date</label>
-        <input type="text" class="form-control" id = "date2" ngModel name="date2"
-            uib-datepicker-popup="yyyy-MM-dd" datepicker-options="datepickerOptions"
-            ng-model="myDate" is-open="isDatepickerOpen">
+          <mat-form-field color="accent" >
+            <mat-label></mat-label>
+            <input ngModel name="startDate" matInput [matDatepicker]="picker1">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+      <label>End Date</label>
+          <mat-form-field color="accent" >
+            <mat-label></mat-label>
+            <input ngModel name="endDate" matInput [matDatepicker]="picker2">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2 color="primary"></mat-datepicker>
+          </mat-form-field>
 
         <div class="form-group">
               <span class="input-group-addon"> X Label </span>
@@ -22,7 +27,7 @@
                 <option [value]="i" *ngFor="let i of x">{{i}} </option>
               </select>
               <span class="input-group-addon"> Y Label</span>
-              <select name="y" class="selectpicker form-control"  ngModel name="y">
+              <select name="y" class="selectpicker form-control" required ngModel name="y">
                 <option [value]="i" *ngFor="let i of y">{{i}}</option>
               </select>
               <span class="input-group-addon"> Bins</span>
